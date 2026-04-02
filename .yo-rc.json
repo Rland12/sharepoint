@@ -1,0 +1,19 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "useGulp": false,
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.19.0",
+    "sdksVersions": {},
+    "version": "1.22.2",
+    "libraryName": "spfx-carousel",
+    "libraryId": "bc1e5e64-fefb-4cc0-a28d-6837b335425c",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "spfx_carousel",
+    "solutionShortDescription": "spfx_carousel description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
