@@ -1,12 +1,16 @@
+export interface ICarouselSlide {
+  title: string;
+  summary: string;
+  href?: string;
+  imageSrc?: string;
+  imageAlt: string;
+}
+
 export interface ISpfxCarouselProps {
-  description: string;
-  subtitle: string;
+  slides: ICarouselSlide[];
   enableAutoplay: boolean;
-  autoplayDelay: number;
-  showPagination: boolean;
-  slidesJson: string;
-  isDarkTheme: boolean;
-  environmentMessage: string;
+  autoplayDelaySeconds: number;
+  isLoading: boolean;
+  errorMessage?: string;
   hasTeamsContext: boolean;
-  userDisplayName: string;
 }
