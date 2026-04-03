@@ -50,8 +50,8 @@ export default class SpfxCarouselWebPart extends BaseClientSideWebPart<ISpfxCaro
   // SharePoint's rendered payload can expose the same logical field under different internal names.
   // We keep the known aliases from both News lists here so mapping stays easy without extra property pane setup.
   private static readonly _itemIdFieldIds: string[] = ['ID', 'Id'];
-  private static readonly _titleFieldIds: string[] = ['Headline_x0020_Suggestion', 'Title', 'Title.'];
-  private static readonly _bodyFieldIds: string[] = ['Story_x0020_Details', 'Body', 'Body.'];
+  private static readonly _titleFieldIds: string[] = ['Title', 'Title.','Headline', 'Headline_x0020_Suggestion'];
+  private static readonly _bodyFieldIds: string[] = ['Body', 'Body.', 'Story_x0020_Details'];
   private static readonly _targetUrlFieldIds: string[] = [
     'TargetURL',
     'Target URL',
