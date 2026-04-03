@@ -46,12 +46,12 @@ export interface ISpfxCarouselWebPartProps {
 
 export default class SpfxCarouselWebPart extends BaseClientSideWebPart<ISpfxCarouselWebPartProps> {
   // The News list is pinned to a known GUID so a future rename does not break the web part.
-  private static readonly _newsListId: string = '292b35f4-7966-47c4-95f0-80a2c6d3f033';
+  private static readonly _newsListId: string = '7b68641e-c9b4-48c5-831b-04938fdcce43';
   // SharePoint's rendered payload can expose the same logical field under different internal names.
   // We keep those variants in one place so mapping stays easy to adjust.
   private static readonly _itemIdFieldIds: string[] = ['ID', 'Id'];
-  private static readonly _titleFieldIds: string[] = ['Title', 'Title.'];
-  private static readonly _bodyFieldIds: string[] = ['Body', 'Body.'];
+  private static readonly _titleFieldIds: string[] = ['Title', 'Title.','Headline', 'Headline_x0020_Suggestion'];
+  private static readonly _bodyFieldIds: string[] = ['Body', 'Body.', 'Story_x0020_Details'];
   private static readonly _targetUrlFieldIds: string[] = [
     'Target URL',
     'Target_x0020_URL',
