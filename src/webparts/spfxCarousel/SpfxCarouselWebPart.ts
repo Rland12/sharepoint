@@ -45,31 +45,36 @@ export interface ISpfxCarouselWebPartProps {
 }
 
 export default class SpfxCarouselWebPart extends BaseClientSideWebPart<ISpfxCarouselWebPartProps> {
-  // The News list is pinned to a known GUID so a future rename does not break the web part.
-  private static readonly _newsListId: string = '292b35f4-7966-47c4-95f0-80a2c6d3f033';
+  // The home page News list is pinned to a known GUID so the web part can read it without extra setup.
+  private static readonly _newsListId: string = '7b68641e-c9b4-48c5-831b-04938fdcce43';
   // SharePoint's rendered payload can expose the same logical field under different internal names.
-  // We keep those variants in one place so mapping stays easy to adjust.
+  // We keep the known aliases from both News lists here so mapping stays easy without extra property pane setup.
   private static readonly _itemIdFieldIds: string[] = ['ID', 'Id'];
-  private static readonly _titleFieldIds: string[] = ['Title', 'Title.'];
-  private static readonly _bodyFieldIds: string[] = ['Body', 'Body.'];
+  private static readonly _titleFieldIds: string[] = ['Headline_x0020_Suggestion', 'Title', 'Title.'];
+  private static readonly _bodyFieldIds: string[] = ['Story_x0020_Details', 'Body', 'Body.'];
   private static readonly _targetUrlFieldIds: string[] = [
+    'TargetURL',
     'Target URL',
     'Target_x0020_URL',
-    'TargetURL',
     'TargetUrl',
     'Link'
   ];
   private static readonly _imageFieldIds: string[] = ['Image.', 'Image', 'Image0', 'Picture'];
   private static readonly _destinationFieldIds: string[] = [
+    'NewsDestination',
     'News Destination',
     'News_x0020_Destination',
-    'NewsDestination',
     'Destination'
   ];
   private _isDarkTheme: boolean = false;
   private _slides: ICarouselSlide[] = [];
   private _isLoading: boolean = false;
   private _errorMessage: string | undefined;
+
+  private _getFetchRowLimit(): number {
+    const slideLimit: number = this.properties.slideLimit || 5;
+    return Math.max(slideLimit * 3, 15);
+  }
 
   public render(): void {
     // The web part owns SharePoint data loading; the React component is only responsible for presentation.
@@ -193,15 +198,16 @@ export default class SpfxCarouselWebPart extends BaseClientSideWebPart<ISpfxCaro
       // RenderListDataAsStream gives us SharePoint's rendered field output, which is more useful here than the raw
       // list item endpoint because image and link fields often come back as preview HTML/button markup.
       const requestUrl: string = `${siteUrl}/_api/web/lists(guid'${listContext.listId}')/RenderListDataAsStream`;
-      const requestBody: string = JSON.stringify({
-        parameters: {
-          RenderOptions: 2,
-          // We only need a simple most-recent-first slice for the carousel.
-          ViewXml:
-            '<View><Query><OrderBy><FieldRef Name="Created" Ascending="FALSE" /></OrderBy></Query>' +
-            `<RowLimit>${this.properties.slideLimit || 5}</RowLimit></View>`
-        }
-      });
+    const requestBody: string = JSON.stringify({
+      parameters: {
+        RenderOptions: 2,
+        // We intentionally fetch more rows than the visible slide limit because some rows may be filtered
+        // out after load if they are not tagged for the rotator.
+        ViewXml:
+          '<View><Query><OrderBy><FieldRef Name="Created" Ascending="FALSE" /></OrderBy></Query>' +
+          `<RowLimit>${this._getFetchRowLimit()}</RowLimit></View>`
+      }
+    });
 
       const response: SPHttpClientResponse = await this.context.spHttpClient.post(
         requestUrl,
