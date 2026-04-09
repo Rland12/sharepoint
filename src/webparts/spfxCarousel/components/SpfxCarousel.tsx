@@ -73,7 +73,7 @@ const slideLinkStyle: React.CSSProperties = {
   position: 'relative',
   display: 'flex',
   width: '100%',
-  minHeight: '420px',
+  aspectRatio: '16 / 9',
   padding: '24px',
   overflow: 'hidden',
   border: '1px solid #d0d7e2',
